@@ -143,16 +143,11 @@ p {
   opacity: 0.4;
 }
 
-// .App{
-//   // background: linear-gradient(45deg, #1e1d29 30%, #2b3952 90%);
-//   // color: white;
-// }
-
 .char-card {
     color: white !important;
 }
 
-.char-card:hover{
+.char-card:hover , Button:hover{
   box-shadow: -1px 10px 29px 0px rgba(0,0,0,0.8);
 }
 
@@ -163,10 +158,15 @@ p {
   color: red;
 }
 
-.top-section{
+.top-section, .top-section-home{
   background:linear-gradient( rgba(34.51%, 20.43%, 16.86%, 1.00) 5px, rgba(20.78%, 26.27%, 24.71%, 0.84)50%),url('../src/Assets/238294.png');
   height:400px;
-  margin-bottom:20px;
+  margin-bottom:20px; 
+}
+
+.top-section-home{
+  display: flex;
+  justify-content: center;
 }
 
 .character-desc p{
@@ -185,6 +185,31 @@ p {
   margin:15px 0;
 }
 
+.search-term{
+  border: 1px solid white !important;
+  border-radius:5px;
+  background-color: white;
+  input{
+    font-weight: bold;
+    font-size: 18px
+  }
+}
+
+.search-term:hover{
+  box-shadow: 5px 10px 29px 5px rgba(153, 147, 147, 0.8);
+}
+
+.title{
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  background:linear-gradient( rgba(34.51%, 20.43%, 16.86%, 1.00) 5px, rgba(20.78%, 26.27%, 24.71%, 0.84)50%);
+  color: white;
+height:45px;
+margin:10px;
+border-radius: 5px;
+padding: 7px
+}
 @media only screen and (max-width: 768px) {
   .nav-bar-item {
      display: none;
@@ -198,5 +223,5 @@ p {
       text-align: center;
     }
   }
-  
+ 
 } 

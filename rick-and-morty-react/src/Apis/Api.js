@@ -10,8 +10,14 @@ export const getCharacters = async (ids) => {
   return data;
 }
 
-export const getCharacterinfo = async (name) => {
 
+export const getEpisode = async (id) => {
+  const response = await fetch(`https://rickandmortyapi.com/api/episode/${id}`)
+  const data = await response.json();
+  return data;
+}
+
+export const getCharacterinfo = async (name) => {
   try {
     const response = await fetch(`https://rickandmortyapi.com/api/character/?name=${name}`)
     const res = await response.json()
@@ -41,6 +47,7 @@ export const getLocationinfo = async (dimension) => {
     return []
   }
 }
+
 
 export const getAllCharacters = async (key, nextPage = 1) => {
   try {
@@ -83,9 +90,3 @@ export const getAllLocations = async (key, nextPage = 1) => {
   };
 };
 
-
-export const getEpisode = async (id) => {
-  const response = await fetch(`https://rickandmortyapi.com/api/episode/${id}`)
-  const data = await response.json();
-  return data;
-}

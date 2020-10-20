@@ -1,36 +1,53 @@
-import React, { } from 'react';
+import React, { useState, useEffect } from 'react';
 import List from "../General/List";
 import { getAllLocations } from '../../Apis/Api';
  import { useInfiniteQuery } from 'react-query';
- import CustomButton from "../../Components/General/CustomButton";
 
-const Locations=()  => {        
+const Locations=()  => {  
+  const [locationArray, setLocationArray] = useState([]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
+
     const { status, data, fetchMore } = useInfiniteQuery(
-        'episodes',
+        'locations',
         getAllLocations,
         {
           getFetchMore: (lastGroup, allGroups) => lastGroup.nextPage,
         }
       );
 
+
       if (status === 'loading') {
         return (
           <p>loading</p>
         );
       }
+      function handleScroll() {
+        console.log("asdf")
+        if ((data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
+          fetchMore();      
+          setLocationArray(list);
+        }
+    }
 
       const list = [];
       data.forEach((page) => {
         page.data &&
-          page.data.forEach((char) => {
-            list.push(char);
+          page.data.forEach((location) => {
+            list.push(location);
           });
       });
     
       let locationList=""
 
 if(list){
-    locationList = list.map(location => {
+  if (locationArray.length === 0 ) {
+      setLocationArray(list);
+  }
+    locationList = locationArray.map(location => {
     return<div className={`${(location.residents!==undefined && location.residents.length===0) ? "disabled" : ""}`} key={location.id}>
     <List   name={location.name} property={location.dimension} path={`/location/${location.id}`}></List>
    
@@ -38,13 +55,9 @@ if(list){
 });
 }
 
-let btn=""
-if(data[0].pages !== data[data.length - 1].next){
-  btn=<CustomButton fetch={fetchMore}/>
-}
     return <div onScroll={() => fetchMore()}>
+              <div className="title">Locations</div>
         <div >{locationList }</div>
-        {btn}
     </div>     
 }
 

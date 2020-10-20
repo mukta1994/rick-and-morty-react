@@ -8,6 +8,8 @@ import CustomButton from "../../Components/General/CustomButton";
 
 
 const Dimensions = () => {
+  
+
     const { status, data, fetchMore } = useInfiniteQuery(
         'episodes',
         getAllLocations,
@@ -29,12 +31,11 @@ const Dimensions = () => {
                 list.push(char.dimension);
             });
     });
-
     const dimenList = list.filter(function (elem, pos) {
         return list.indexOf(elem) === pos;
     });
 
-
+  
     let locationList = ""
 
     if (list) {
@@ -46,10 +47,11 @@ const Dimensions = () => {
         });
     }
     let btn=""
-if(data[0].pages !== data[data.length - 1].next){
+if((data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null){
   btn=<CustomButton fetch={fetchMore}/>
 }
-    return <div onScroll={() => fetchMore()}>
+    return <div>
+        <div className="title">Dimensions</div>
         <div >{locationList}</div>
         {btn}
     </div>

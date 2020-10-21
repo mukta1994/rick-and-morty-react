@@ -1,31 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Character from "./Character";
 import "./CharacterList.scss";
-import { getAllCharacters } from '../../Apis/Api';
+import { getAllData } from '../../Apis/Api';
 import { useInfiniteQuery } from 'react-query';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom'
-import {filterOptions,filtereddata} from '../../Constants/Constants'; 
+import { filterOptions, filtereddata,getlistdata,searchdatabyname } from '../../Constants/Constants';
 
 
 const CharacterList = (props) => {
   const [filterOptionSelected, setfilterOptionSelected] = useState('name-asc');
-  const [que, setque] = useState("");
+  const [query, setquery] = useState("");
   const [characterArray, setCharacterArray] = useState([]);
   const [value, setValue] = React.useState(filterOptions[0]);
-  
-  
+  const sortOptions = filterOptions;
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   });
 
-const sortOptions=filterOptions;
-
   const { status, data, fetchMore } = useInfiniteQuery(
-    'characters',
-    getAllCharacters,
+    ['characters','character'],
+    getAllData,
     {
       getFetchMore: (lastGroup, allGroups) => lastGroup.nextPage,
     }
@@ -35,84 +33,78 @@ const sortOptions=filterOptions;
       <p>loading</p>
     );
   }
+
+  const list = getlistdata(data);
+  
   function handleScroll() {
-    if (que === "") {
-      if ((data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
-        fetchMore();    // }  
-        setCharacterArray(filtereddata(filterOptionSelected,list));
+    if (query === "") {
+      if (data && (data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
+        fetchMore();    
+        setCharacterArray(filtereddata(filterOptionSelected, list));
       }
     }
   }
 
-
-  let list = [];
-  data.forEach((page) => {
-    page.data &&
-      page.data.forEach((char) => {
-        list.push(char);
-      });
-  });
-
-
   let characterList = ""
   if (list) {
-    if (characterArray.length === 0 && que === "") {
-      setCharacterArray(filtereddata(filterOptionSelected,list));
+    if (characterArray.length === 0 && query === "") {
+      setCharacterArray(filtereddata(filterOptionSelected, list));
     }
     characterList = characterArray.map(character => {
       return <div className="character-item" key={character.id}>
         <Character data={character} /></div>;
     });
   }
-  else{
-   return characterList = <div>no characters matching this word</div>
-  }
 
+  //search data in the list of characters by name
   const searchdata = (e) => {
-    setque(e.target.value);
+    setquery(e.target.value);
     console.log("search")
     if (e.target.value !== "") {
-      const newList = list.filter(item => {
-        const lc = item.name.toLowerCase();
-        const filter = e.target.value.toLowerCase();
-        return lc.includes(filter);
-      });
-      console.log(newList, "lc")
+      const newList = searchdatabyname(list,e.target.value)
       setCharacterArray(newList);
     }
-    else{
+    else {
       setCharacterArray(list)
-    } 
+    }
   }
 
+  //redirect to specific character
   const goTo = (val) => {
-    let url = `/character/`;
-    props.history.push(url + val.id);
-  }
-  const sortData = (e,val) => {
-    if(val!==null){
-      setfilterOptionSelected(val.val)
-      const sortedData=filtereddata(val.val,characterArray)
-      setCharacterArray(sortedData);
-      console.log(val,"target");
-       }
-     
+    console.log(val)
+    if(val.id!==undefined){
+      let url = `/character/`;
+      props.history.push(url + val.id);
+    }
+    
   }
 
-  if(characterArray.length===0 && que!==""){
-   characterList = <div>no characters matching this word</div>
-   }
+  const sortData = (e, val) => {
+    if (val !== null) {
+      setfilterOptionSelected(val.val)
+      const sortedData = filtereddata(val.val, characterArray)
+      setCharacterArray(sortedData);
+    }
+
+  }
+
+  let nodata="";
+  if (characterArray.length === 0 && query !== "") {
+    nodata = <div className="no-data">no characters matching this word</div>
+  }
 
   return <div>
     <div className="top-section-home">
-      <div className="search-bar" style={{margin: 'auto' }} >
+      <div className="search-bar" style={{ margin: 'auto' }} >
+        {/* autocomplete which has input filed for search */}
+        <h2>Rick and Morty</h2>
         <Autocomplete
           freeSolo
           id="free-solo-2-demo"
           disableClearable
           options={list}
           getOptionLabel={(option) => option.name}
-          style={{ margin: 'auto'}}
+          style={{ margin: 'auto' }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -125,23 +117,26 @@ const sortOptions=filterOptions;
         />
       </div>
     </div>
-   
+
+{/* autocomplete where it includes only input as list item  */}
     <div className="container main-content">
       <div className="sort-options">
-    <Autocomplete
-    value={value}
-        id="include-input-in-list"
-        includeInputInList
-        options={sortOptions}
-          getOptionLabel={(option) => option.name}     
-          onChange={(event, newValue) => { setValue(newValue);
-            sortData(event,newValue);
-          }}            
-        renderInput={(params) => (
-          <TextField {...params} variant="outlined" label="Sorting options" margin="normal" />
-        )}           
-      /></div>
+        <Autocomplete
+          value={value}
+          id="include-input-in-list"
+          includeInputInList
+          options={sortOptions}
+          getOptionLabel={(option) => option.name}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            sortData(event, newValue);
+          }}
+          renderInput={(params) => (
+            <TextField {...params} variant="outlined" label="Sorting options" margin="normal" />
+          )}
+        /></div>
       <div className="characters-wrap" >{characterList}</div>
+      {nodata}
     </div></div>
 }
 

@@ -1,8 +1,11 @@
 import React, {  } from "react";
 import {extractIdsFromArr } from '../../Constants/Constants';
-import { getLocationinfo, getCharacters } from '../../Apis/Api';
+import { getLocationsinfo, getSingleOrmultipleData } from '../../Apis/Api';
 import CharacterCard from "../../Components/General/CharacterCard";
 
+//shows Characters by using dimension name. 
+//1.gets all locations by dimension 
+//2 By using those location characters are retrieved
     class Dimension extends React.Component {
         state = {
             LocationInfo: null,
@@ -11,11 +14,12 @@ import CharacterCard from "../../Components/General/CharacterCard";
             residents:null
           };
         async componentDidMount() {
+          //get locations and characters for given dimension
             if (this.props.match.params.dimension) {
               try {
-                const LocationInfo = await getLocationinfo(this.props.match.params.dimension);                     
+                const LocationInfo = await getLocationsinfo(this.props.match.params.dimension);   
                 const residentIds =  extractIdsFromArr(LocationInfo); 
-                const residents = await getCharacters(residentIds);
+                const residents = await getSingleOrmultipleData('character',residentIds);
                 
                 this.setState({
                   loading: false,
@@ -39,13 +43,15 @@ import CharacterCard from "../../Components/General/CharacterCard";
             });
         }
         else if(residents){
-            return <CharacterCard key={residents.id} data={residents} />; 
-
+          characterList= <CharacterCard key={residents.id} data={residents} />; 
         }
+        else 
+        characterList= <div className="no-data"> No characters for this dimension</div>; 
+
             if (!loading && LocationInfo) {
              locationDetails = (
                   <div className="movie-details-wrapper">
-                    <h1>Dimension : {this.props.match.params.dimension}</h1>            
+                    <div className="title">Dimension : {this.props.match.params.dimension}</div>            
                   </div>
                 );
               }

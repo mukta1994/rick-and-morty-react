@@ -1,18 +1,18 @@
-import React, { } from 'react';
+import React, {  } from 'react';
 import List from "../General/List";
-//import "./Locations.scss";
-// import { makeStyles } from '@material-ui/core/styles';
-import { getAllLocations } from '../../Apis/Api';
+import { getAllData } from '../../Apis/Api';
 import { useInfiniteQuery } from 'react-query';
 import CustomButton from "../../Components/General/CustomButton";
+import AutoCompleteGenaral from "../General/AutoCompleteGenaral";
+import {getdistinctDatabyusingProperty } from '../../Constants/Constants';
 
 
-const Dimensions = () => {
-  
+const Dimensions = (props) => {
+   // const [filtered, setFiltered] = useState([]);
 
     const { status, data, fetchMore } = useInfiniteQuery(
-        'episodes',
-        getAllLocations,
+        ['dimensions', 'location'],
+        getAllData,
         {
             getFetchMore: (lastGroup, allGroups) => lastGroup.nextPage,
         }
@@ -28,30 +28,28 @@ const Dimensions = () => {
     data.forEach((page) => {
         page.data &&
             page.data.forEach((char) => {
-                list.push(char.dimension);
+                list.push(char);
             });
     });
-    const dimenList = list.filter(function (elem, pos) {
-        return list.indexOf(elem) === pos;
-    });
+    const dimenList =getdistinctDatabyusingProperty(list);
 
-  
     let locationList = ""
-
     if (list) {
-        locationList = dimenList.map((dimension,i) => {
-            // return <CharacterItem key={character.id} data={character} />
+        locationList = dimenList.map((dimension, i) => {
             return <div key={i}>
-                    <List name={dimension} property="" path={`/dimension/${dimension}`}></List>
+                <List name={dimension.dimension} property="" path={`/dimension/${dimension.dimension}`}></List>
             </div>;
         });
     }
-    let btn=""
-if((data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null){
-  btn=<CustomButton fetch={fetchMore}/>
-}
+    let btn = ""
+    if (data && ( data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
+        btn = <CustomButton fetch={fetchMore} />
+    }
     return <div>
         <div className="title">Dimensions</div>
+        <div className="sort-options">
+        <AutoCompleteGenaral pathname="dimension"></AutoCompleteGenaral>
+</div>
         <div >{locationList}</div>
         {btn}
     </div>

@@ -2,9 +2,10 @@ import React, {  } from "react";
 //import Card from '@material-ui/core/Card';
 //import CardContent from '@material-ui/core/CardContent';
 import { extractIds } from '../../Constants/Constants';
-import { getEpisode, getCharacters } from '../../Apis/Api';
+import {  getSingleOrmultipleData } from '../../Apis/Api';
 import CharacterCard from "../../Components/General/CharacterCard";
 
+// shows Characters of episode using episode id. 
     class Episode extends React.Component {
         state = {
             EpisodeInfo: null,
@@ -15,10 +16,10 @@ import CharacterCard from "../../Components/General/CharacterCard";
         async componentDidMount() {
             if (this.props.match.params.id) {
               try {
-                const EpisodeInfo = await getEpisode(this.props.match.params.id);
+                const EpisodeInfo = await getSingleOrmultipleData('episode',this.props.match.params.id);
                const residentIds = extractIds(EpisodeInfo.characters);
 
-                const episodeCharacters = await getCharacters(residentIds);
+                const episodeCharacters = await getSingleOrmultipleData('character',residentIds);
                 
                 this.setState({
                   loading: false,
@@ -36,15 +37,21 @@ import CharacterCard from "../../Components/General/CharacterCard";
             const { EpisodeInfo,loading,episodeCharacters } = this.state;
             let episodeDetails = null;
             let characterList=null;
-            if(episodeCharacters){
+            if(episodeCharacters && episodeCharacters.length!==0){
                 characterList = episodeCharacters.map(character => {
                     return <CharacterCard key={character.id} data={character} />; 
                 });
+            } 
+            else if(episodeCharacters){
+              characterList= <CharacterCard key={episodeCharacters.id} data={episodeCharacters} />; 
             }
+            else 
+            characterList= <div class="no-data"> No characters for this dimension</div>; 
+    
             if (!loading && EpisodeInfo) {
              episodeDetails = (
                   <div className="movie-details-wrapper">
-                    <h1>Episode : {EpisodeInfo.name}</h1>
+                    <div className="title">Episode : {EpisodeInfo.name}</div>
                     {characterList}
                   </div>
                 );

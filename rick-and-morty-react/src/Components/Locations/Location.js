@@ -1,9 +1,10 @@
 import React, {  } from "react";
 import { extractIds } from '../../Constants/Constants';
-import { getLocation, getCharacters } from '../../Apis/Api';
+import {  getSingleOrmultipleData } from '../../Apis/Api';
 import CharacterCard from "../../Components/General/CharacterCard";
 
-    class Location extends React.Component {
+// shows Characters under the specific location using location id
+  class Location extends React.Component {
         state = {
             LocationInfo: null,
             loading: true,
@@ -13,11 +14,11 @@ import CharacterCard from "../../Components/General/CharacterCard";
         async componentDidMount() {
             if (this.props.match.params.id) {
               try {
-                const LocationInfo = await getLocation(this.props.match.params.id);
+                const LocationInfo = await getSingleOrmultipleData('location',this.props.match.params.id);
                 let residents="";
                 if(LocationInfo.residents.length){
                   const residentIds = extractIds(LocationInfo.residents);  
-                   residents = await getCharacters(residentIds);
+                   residents = await getSingleOrmultipleData('character',residentIds);
                 }
                                
                 this.setState({
@@ -41,7 +42,7 @@ import CharacterCard from "../../Components/General/CharacterCard";
             if (!loading && LocationInfo) {
              locationDetails = (
                   <div className="">
-                    <h1>Location : {LocationInfo.name}</h1>            
+                    <div className="title">Location : {LocationInfo.name}</div>            
                   </div>
                 );
            
@@ -53,10 +54,10 @@ import CharacterCard from "../../Components/General/CharacterCard";
                 });
             }
             else if(residents){
-              return characterList=<div> {locationDetails} <CharacterCard key={residents.id} data={residents} /></div>; 
+               characterList=<div> {locationDetails} <CharacterCard key={residents.id} data={residents} /></div>; 
             }
             else
-            return characterList=<div>no characters found</div>; 
+             characterList=<div className="no-data">No characters found for this location</div>; 
 
           return(
             <div className="">

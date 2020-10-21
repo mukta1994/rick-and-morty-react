@@ -28,3 +28,28 @@ export const extractIds = (items) =>
     }
   }
 }
+
+export const getlistdata=(data)=>{
+  let list=[]
+  data.forEach((page) => {
+    page.data &&
+      page.data.forEach((char) => {
+        list.push(char);
+      });
+  });
+  return list;
+}
+
+export const getdistinctDatabyusingProperty=(list)=>{
+  return  list.filter((obj, pos, arr) => {
+    return arr.map(mapObj => mapObj.dimension).indexOf(obj.dimension) === pos;
+    })
+}
+
+export const searchdatabyname=(list,value)=>{
+  return list.filter(item => {
+    const lc = item.name.toLowerCase();
+    const filter = value.toLowerCase();
+    return lc.includes(filter);
+  });
+}

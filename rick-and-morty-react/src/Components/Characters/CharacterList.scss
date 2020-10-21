@@ -5,6 +5,7 @@
         grid-template-columns: repeat(4, 25%);
         grid-gap: 20px 5px;
         grid-auto-rows: minmax(100px, auto);
+    padding-right: 16px;
         @media only screen and (max-width: 992px) {
             grid-template-columns: repeat(3, 33.33%);
         }
@@ -103,11 +104,20 @@
 
 }
 
+.top-section-home h2{
+    font-size: 6em;
+    text-align: center;
+    color: white;
+}
+
 .sort-options .MuiAutocomplete-root{
     width:25%; 
 }
 @media only screen and (max-width: 768px) {
     .sort-options .MuiAutocomplete-root, .search-bar{
-    width:80%;
+    width:98%;
+    }
+    .sort-options{
+        justify-content: center;
     }
 }

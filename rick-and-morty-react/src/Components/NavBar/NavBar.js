@@ -177,7 +177,7 @@ export default function NavBar() {
           >
             {/* <MenuIcon /> */}
           </IconButton></li>
-                    <li className="main-navigation-list__item">
+                    <li className="main-navigation-list__item" onClick={handleDrawerClose}>
                         <NavLink
                             exact={true}
                             activeClassName="active"
@@ -186,7 +186,7 @@ export default function NavBar() {
                             Home
                         </NavLink>
                     </li>
-                    <li className="main-navigation-list__item">
+                    <li className="main-navigation-list__item" onClick={handleDrawerClose}>
                         <NavLink
                             activeClassName="active"
                             to="/locations"
@@ -194,7 +194,7 @@ export default function NavBar() {
                             Locations
                         </NavLink>
                     </li>
-                    <li className="main-navigation-list__item">
+                    <li className="main-navigation-list__item" onClick={handleDrawerClose}>
                         <NavLink
                             activeClassName="active"
                             to="/episodes"
@@ -202,7 +202,7 @@ export default function NavBar() {
                             Episodes
                         </NavLink>
                     </li>
-                    <li className="main-navigation-list__item">
+                    <li className="main-navigation-list__item" onClick={handleDrawerClose}>
                         <NavLink
                             activeClassName="active"
                             to="/dimensions"

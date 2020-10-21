@@ -1,27 +1,23 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import List from "../General/List";
 import { getAllData } from '../../Apis/Api';
 import { useInfiniteQuery } from 'react-query';
 import CustomButton from "../../Components/General/CustomButton";
 import AutoCompleteGenaral from "../General/AutoCompleteGenaral";
-import {getdistinctDatabyusingProperty } from '../../Constants/Constants';
+import { getdistinctDatabyusingProperty } from '../../Constants/Constants';
 
 
 const Dimensions = (props) => {
-   // const [filtered, setFiltered] = useState([]);
 
     const { status, data, fetchMore } = useInfiniteQuery(
         ['dimensions', 'location'],
         getAllData,
         {
             getFetchMore: (lastGroup, allGroups) => lastGroup.nextPage,
-        }
-    );
+        });
 
     if (status === 'loading') {
-        return (
-            <p>loading</p>
-        );
+        return (<p>loading</p>);
     }
 
     const list = [];
@@ -31,7 +27,7 @@ const Dimensions = (props) => {
                 list.push(char);
             });
     });
-    const dimenList =getdistinctDatabyusingProperty(list);
+    const dimenList = getdistinctDatabyusingProperty(list);
 
     let locationList = ""
     if (list) {
@@ -42,14 +38,14 @@ const Dimensions = (props) => {
         });
     }
     let btn = ""
-    if (data && ( data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
+    if (data && (data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
         btn = <CustomButton fetch={fetchMore} />
     }
     return <div>
         <div className="title">Dimensions</div>
         <div className="sort-options">
-        <AutoCompleteGenaral pathname="dimension"></AutoCompleteGenaral>
-</div>
+            <AutoCompleteGenaral pathname="dimension"></AutoCompleteGenaral>
+        </div>
         <div >{locationList}</div>
         {btn}
     </div>

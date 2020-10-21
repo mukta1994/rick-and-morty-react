@@ -1,9 +1,9 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
- import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 
 
- const useStyles = makeStyles({
+const useStyles = makeStyles({
   root: {
     background: 'linear-gradient(45deg, #3a3946 30%, #48556b 90%)',
     border: 0,
@@ -12,20 +12,20 @@ import { makeStyles } from '@material-ui/core/styles';
     color: 'white',
     height: 38,
     padding: '0 20px',
-    margin:'0 0 30px 0'
+    margin: '0 0 30px 0'
   },
 });
 
-const CustomButton=(props)  => {   
-    const classes = useStyles();
+const CustomButton = (props) => {
+  const classes = useStyles();
 
-    const fetchMore = () => {
-      props.fetch()
+  const fetchMore = () => {
+    props.fetch()
   }
 
-    return (
+  return (
     <div className="custom-button"><Button className={classes.root} onClick={fetchMore}>Load more </Button></div>
-    );
+  );
 
 }
 

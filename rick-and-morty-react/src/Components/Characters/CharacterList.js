@@ -45,16 +45,6 @@ const CharacterList = (props) => {
     }
   }
 
-  let characterList = ""
-  if (list) {
-    if (characterArray.length === 0 && query === "") {
-      setCharacterArray(filtereddata(filterOptionSelected, list));
-    }
-    characterList = characterArray.map(character => {
-      return <div className="character-item" key={character.id}>
-        <Character data={character} /></div>;
-    });
-  }
 
   //search data in the list of characters by name
   const searchdata = (e) => {
@@ -86,6 +76,17 @@ const CharacterList = (props) => {
       setCharacterArray(sortedData);
     }
 
+  }
+
+  let characterList = ""
+  if (list) {
+    if (characterArray.length === 0 && query === "") {
+      setCharacterArray(filtereddata(filterOptionSelected, list));
+    }
+    characterList = characterArray.map(character => {
+      return <div className="character-item" key={character.id}>
+        <Character data={character} /></div>;
+    });
   }
 
   let nodata="";

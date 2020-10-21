@@ -84,8 +84,8 @@ const CharacterList = (props) => {
       setCharacterArray(filtereddata(filterOptionSelected, list));
     }
     characterList = characterArray.map(character => {
-      return <div className="character-item" key={character.id}>
-        <Character data={character} /></div>;
+      return <div key={character.id}>
+        <Character className="character-item"  data={character} /></div>;
     });
   }
 

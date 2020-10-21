@@ -8,8 +8,8 @@ export class Character extends Component {
     render() {
         const { id, name, image, species, status } = this.props.data;
         return (
-            <Link to={{ pathname: `/character/${id}` }}>  <Card className="char-card">
-                <CardContent> <div>
+            <Link to={{ pathname: `/character/${id}` }}>  <Card className="char-card" style={{height:"100%"}}>
+                <CardContent> <div >
                     <figure className="item-thumb-wrap">
                         <img
                             src={image}

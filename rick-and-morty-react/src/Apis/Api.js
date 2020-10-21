@@ -1,25 +1,15 @@
-export const getLocation = async (id) => {
-  const response = await fetch(`https://rickandmortyapi.com/api/location/${id}`)
+
+
+export const getSingleOrmultipleData = async (pathname,id) => {
+  const response = await fetch(`https://rickandmortyapi.com/api/`+pathname+`/${id}`)
   const data = await response.json();
   return data;
 }
 
-export const getCharacters = async (ids) => {
-  const response = await fetch(`https://rickandmortyapi.com/api/character/${ids}`)
-  const data = await response.json();
-  return data;
-}
 
-
-export const getEpisode = async (id) => {
-  const response = await fetch(`https://rickandmortyapi.com/api/episode/${id}`)
-  const data = await response.json();
-  return data;
-}
-
-export const getCharacterinfo = async (name) => {
+export const getInfobyName = async (pathname,name) => {
   try {
-    const response = await fetch(`https://rickandmortyapi.com/api/character/?name=${name}`)
+    const response = await fetch(`https://rickandmortyapi.com/api/`+pathname+`/?name=${name}`)
     const res = await response.json()
 
     if (response.ok) {
@@ -33,7 +23,8 @@ export const getCharacterinfo = async (name) => {
   }
 }
 
-export const getLocationinfo = async (dimension) => {
+//get locations for dimension
+export const getLocationsinfo = async (dimension) => {
   try {
     const response = await fetch(`https://rickandmortyapi.com/api/location/?dimension=${dimension}`)
     const data = await response.json();
@@ -48,10 +39,9 @@ export const getLocationinfo = async (dimension) => {
   }
 }
 
-
-export const getAllCharacters = async (key, nextPage = 1) => {
+export const getAllData = async (key,pathname, nextPage = 1) => {
   try {
-    const res = await fetch(`https://rickandmortyapi.com/api/character/?page=${nextPage}`);
+    const res = await fetch(`https://rickandmortyapi.com/api/`+pathname+`/?page=${nextPage}`);
     const { results, info } = await res.json();
     return {
       data: results,
@@ -64,29 +54,4 @@ export const getAllCharacters = async (key, nextPage = 1) => {
   }
 };
 
-export const getAllEpisodes = async (key, nextPage = 1) => {
-  try {
-    const res = await fetch(`https://rickandmortyapi.com/api/episode/?page=${nextPage}`);
-    const { results, info } = await res.json();
-    return {
-      data: results,
-      nextPage: info.next ? nextPage + 1 : null,
-      pages: info.pages,
-      next: nextPage
-    };
-  } catch (err) {
-    console.error(`Something went wrong fetching the now playing data: ${err}`);
-    throw err;
-  }
-};
-
-export const getAllLocations = async (key, nextPage = 1) => {
-  const res = await fetch(`https://rickandmortyapi.com/api/location/?page=${nextPage}`);
-  const { results, info } = await res.json();
-  return {
-    data: results,
-    nextPage: info.next ? nextPage + 1 : null,
-    pages: info.pages
-  };
-};
 

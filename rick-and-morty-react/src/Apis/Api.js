@@ -1,15 +1,17 @@
+import {BASE_URL } from '../Constants/Constants';
 
-
+//get single or list of character, locations, episodes based on pathname 
 export const getSingleOrmultipleData = async (pathname,id) => {
-  const response = await fetch(`https://rickandmortyapi.com/api/`+pathname+`/${id}`)
+  const response = await fetch(BASE_URL+pathname+`/${id}`)
   const data = await response.json();
   return data;
 }
 
 
+//fetch filtered data of location list, or episode or character list
 export const getInfobyName = async (pathname,name) => {
   try {
-    const response = await fetch(`https://rickandmortyapi.com/api/`+pathname+`/?name=${name}`)
+    const response = await fetch(BASE_URL+pathname+`/?name=${name}`)
     const res = await response.json()
 
     if (response.ok) {
@@ -26,7 +28,7 @@ export const getInfobyName = async (pathname,name) => {
 //get locations for dimension
 export const getLocationsinfo = async (dimension) => {
   try {
-    const response = await fetch(`https://rickandmortyapi.com/api/location/?dimension=${dimension}`)
+    const response = await fetch(BASE_URL+`location/?dimension=${dimension}`)
     const data = await response.json();
     if (response.ok) {
       return data.results;
@@ -41,7 +43,7 @@ export const getLocationsinfo = async (dimension) => {
 
 export const getAllData = async (key,pathname, nextPage = 1) => {
   try {
-    const res = await fetch(`https://rickandmortyapi.com/api/`+pathname+`/?page=${nextPage}`);
+    const res = await fetch(BASE_URL+pathname+`/?page=${nextPage}`);
     const { results, info } = await res.json();
     return {
       data: results,

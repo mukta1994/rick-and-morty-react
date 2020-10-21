@@ -44,7 +44,7 @@ const Locations = (props) => {
     }
     locationList = locationArray.map(location => {
       return <div className={`${(location.residents !== undefined && location.residents.length === 0) ? "disabled" : ""}`} key={location.id}>
-        <List name={location.name} property={location.dimension} path={`/location/${location.id}`}></List>
+        <List name={location.name} property={location.dimension} path={`/location/${location.id}`} page="location"></List>
 
       </div>;
     });

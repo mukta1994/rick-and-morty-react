@@ -34,7 +34,6 @@ const Episodes = () => {
   }
 
   let episodeList = ""
-
   if (list) {
     if (episodeArray.length === 0) {
       setEpisodeArray(list);

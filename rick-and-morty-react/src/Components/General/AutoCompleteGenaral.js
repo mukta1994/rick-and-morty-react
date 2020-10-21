@@ -38,7 +38,7 @@ const AutoCompleteGenaral = (props) => {
       includeInputInList
       options={options}
       getOptionLabel={(option) => props.pathname==='dimension' ? option.dimension : option.name}
-      renderInput={(params) => <TextField {...params} variant="outlined" placeholder={"Type"+" "+props.pathname} className="search-term"   onChange={searchresult} />}
+      renderInput={(params) => <TextField {...params} variant="outlined" placeholder={"Type " +props.pathname} className="search-term"   onChange={searchresult} />}
       onChange={(event, value) => {console.log(value);goTo(value)}}
     />)
 }

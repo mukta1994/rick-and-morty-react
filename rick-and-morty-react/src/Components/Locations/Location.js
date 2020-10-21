@@ -54,7 +54,7 @@ import CharacterCard from "../../Components/General/CharacterCard";
                 });
             }
             else if(residents){
-               characterList=<div> {locationDetails} <CharacterCard key={residents.id} data={residents} /></div>; 
+               characterList=<div> <CharacterCard key={residents.id} data={residents} /></div>; 
             }
             else
              characterList=<div className="no-data">No characters found for this location</div>; 

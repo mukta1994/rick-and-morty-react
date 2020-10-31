@@ -49,7 +49,6 @@ const CharacterList = (props) => {
   //search data in the list of characters by name
   const searchdata = (e) => {
     setquery(e.target.value);
-    console.log("search")
     if (e.target.value !== "") {
       const newList = searchdatabyname(list,e.target.value)
       setCharacterArray(newList);
@@ -61,7 +60,6 @@ const CharacterList = (props) => {
 
   //redirect to specific character
   const goTo = (val) => {
-    console.log(val)
     if(val.id!==undefined){
       let url = `/character/`;
       props.history.push(url + val.id);

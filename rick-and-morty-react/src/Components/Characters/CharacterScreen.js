@@ -17,7 +17,6 @@ const CharacterScreen =(props)=> {
     if (props.match.params.id) {
         const character=(await getSingleOrmultipleData('character', props.match.params.id));
         setcharacterInfo(character)
-        console.log(character,"character")
         const locationIds = extractLocationId(character.location.url);
         const episodeIds = extractIds(character.episode);
         setLocationInfo (await getSingleOrmultipleData('location', locationIds));

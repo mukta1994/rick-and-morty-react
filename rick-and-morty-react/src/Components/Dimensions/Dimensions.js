@@ -8,7 +8,6 @@ import { getdistinctDatabyusingProperty } from '../../Constants/Constants';
 
 
 const Dimensions = (props) => {
-
     const { status, data, fetchMore } = useInfiniteQuery(
         ['dimensions', 'location'],
         getAllData,

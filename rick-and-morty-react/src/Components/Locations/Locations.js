@@ -28,7 +28,6 @@ const Locations = (props) => {
     );
   }
   function handleScroll() {
-    console.log("asdf")
     if (data && (data[0].pages >= (data[data.length - 1].nextPage - 1)) && data[data.length - 1].nextPage !== null) {
       fetchMore();
       setLocationArray(list);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { } from 'react';
 import CharacterList from "./Components/Characters/CharacterList";
 import CharacterScreen from "./Components/Characters/CharacterScreen";
 import Locations from "./Components/Locations/Locations";
@@ -17,18 +17,8 @@ import {
 import './App.scss';
 import NavBar from './Components/NavBar/NavBar';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      characterList: [],
-      locations: [],
-      episodes: []
-    }
-  }
+const App = () =>  {
 
-
-  render() {
     return <Router>
       <div className="App">
         <div>
@@ -39,11 +29,6 @@ class App extends Component {
         <Route path="/character/:id" component={CharacterScreen} />
 
         <div className="container main-content">
-          {/* <Route
-          exact
-          path="/locations"
-          render={props => ( <div><Locations /></div>
-          )} /> */}
           <Route exact path="/locations" component={Locations} />
           <Route exact path="/episodes" component={Episodes} />
           <Route exact path="/dimensions" component={Dimensions} />
@@ -53,7 +38,7 @@ class App extends Component {
         </div>
       </div></div>
     </Router>;
-  }
+
 }
 
 export default App;

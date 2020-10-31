@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React, { } from "react";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Link } from 'react-router-dom'
 
 
-export class Character extends Component {
-    render() {
-        const { id, name, image, species, status } = this.props.data;
+const Character =(props)=> {
+        const { id, name, image, species, status } = props.data;
         return (
             <Link to={{ pathname: `/character/${id}` }}>  <Card className="char-card" style={{height:"100%"}}>
                 <CardContent> <div >
@@ -26,7 +25,6 @@ export class Character extends Component {
                     </div>
                 </CardContent></Card></Link>
         );
-    }
 }
 
 export default Character;

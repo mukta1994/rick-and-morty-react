@@ -1,40 +1,28 @@
-import React, {  } from "react";
-//import Card from '@material-ui/core/Card';
-//import CardContent from '@material-ui/core/CardContent';
+import React, { useState, useEffect } from "react";
 import { extractIds } from '../../Constants/Constants';
 import {  getSingleOrmultipleData } from '../../Apis/Api';
 import CharacterCard from "../../Components/General/CharacterCard";
 
 // shows Characters of episode using episode id. 
-    class Episode extends React.Component {
-        state = {
-            EpisodeInfo: null,
-            loading: true,
-            error: true,
-            episodeCharacters:null
-          };
-        async componentDidMount() {
-            if (this.props.match.params.id) {
+    const Episode =(props)=> {
+          const [episodeCharacters, setepisodeCharacters] = useState([]);
+          const [EpisodeInfo, setEpisodeInfo] = useState();
+          useEffect(()=>{
+            (async () => {
+            if (props.match.params.id) {
               try {
-                const EpisodeInfo = await getSingleOrmultipleData('episode',this.props.match.params.id);
-               const residentIds = extractIds(EpisodeInfo.characters);
-
-                const episodeCharacters = await getSingleOrmultipleData('character',residentIds);
+                const Episode = await getSingleOrmultipleData('episode',props.match.params.id);
+                setEpisodeInfo(Episode)
+               const residentIds = extractIds(Episode.characters);
+               setepisodeCharacters( await getSingleOrmultipleData('character',residentIds));
                 
-                this.setState({
-                  loading: false,
-                  EpisodeInfo,                 
-                  error: false,
-                  episodeCharacters
-                });
               } catch (err) {
-                this.setState({ loading: false, error: true });
               }
             }
-          }
+          })()
+          },[props.match.params.id])
         
-        render() {
-            const { EpisodeInfo,loading,episodeCharacters } = this.state;
+           // const { EpisodeInfo,loading,episodeCharacters } = this.state;
             let episodeDetails = null;
             let characterList=null;
             if(episodeCharacters && episodeCharacters.length!==0){
@@ -48,7 +36,7 @@ import CharacterCard from "../../Components/General/CharacterCard";
             else 
             characterList= <div class="no-data"> No characters for this dimension</div>; 
     
-            if (!loading && EpisodeInfo) {
+            if (EpisodeInfo) {
              episodeDetails = (
                   <div className="movie-details-wrapper">
                     <div className="title">Episode : {EpisodeInfo.name}</div>
@@ -61,7 +49,6 @@ import CharacterCard from "../../Components/General/CharacterCard";
              {episodeDetails}
             </div>
           );
-        }
       }
 
     export default Episode;

@@ -7,9 +7,11 @@ import AutoCompleteGenaral from "../General/AutoCompleteGenaral";
 
 // component which shows details of character by id. search bar is provided to search other characters
 const CharacterScreen =(props)=> {
-  const [LocationInfo, setLocationInfo] = useState();
-  const [characterInfo, setcharacterInfo] = useState();
-  const [episodeInfo, setepisodeInfo] = useState();
+  const [LocationInfo, setLocationInfo] = useState("");
+  const [characterInfo, setcharacterInfo] = useState("");
+  const [episodeInfo, setepisodeInfo] = useState([]);
+  const [name, setname] = useState([]);
+
 
   useEffect(() => {
     (async () => {
@@ -17,11 +19,14 @@ const CharacterScreen =(props)=> {
     if (props.match.params.id) {
         const character=(await getSingleOrmultipleData('character', props.match.params.id));
         setcharacterInfo(character)
+        setname(character.location.name)
         const locationIds = extractLocationId(character.location.url);
         const episodeIds = extractIds(character.episode);
         setLocationInfo (await getSingleOrmultipleData('location', locationIds));
-        setepisodeInfo(await getSingleOrmultipleData('episode', episodeIds));
-
+        if(episodeIds.includes(","))
+          setepisodeInfo(await getSingleOrmultipleData('episode', episodeIds));
+        else
+          setepisodeInfo([await getSingleOrmultipleData('episode', episodeIds)]);
     }
   })()
 },[props.match.params.id])
@@ -29,16 +34,10 @@ const CharacterScreen =(props)=> {
 
     let episodeDetails = null;
     let characterList = null;
-    if (episodeInfo && episodeInfo.length) {
       episodeDetails = episodeInfo.map(episode => {
         return <List key={episode.id} name={episode.name} property={episode.air_date} path={`/episode/${episode.id}`}></List>
       });
-    }
-    else if (episodeInfo) {
-      episodeDetails =
-        <List name={episodeInfo.name} property={episodeInfo.air_date} path={`/episode/${episodeInfo.id}`}></List>
-    }
-    if (characterInfo && LocationInfo) {
+   
       characterList = <div className="top-section character-screen" style={{ height: "100%" }}>
              <div className="search-bar" style={{ margin: 'auto' }} > <AutoCompleteGenaral pathname="character"></AutoCompleteGenaral></div>
         <div className="character-detail container">
@@ -63,15 +62,14 @@ const CharacterScreen =(props)=> {
             <p>Gender:</p>
             <p className="property">{characterInfo.gender}</p>
 
-            <p>{characterInfo.location.name ? "Last known location:" : ""} </p>
-            <p className="property">{characterInfo.location.name}</p>
-
+            <p>{name ? "Last known location:" : ""} </p>
+             <p className="property">{name}</p>
+          
             <p>{LocationInfo.dimension ? "Dimension:" : ""}</p>
             <p className="property">{LocationInfo.dimension}</p>
           </div>
         </div>
       </div>
-    }
 
     return (
       <div >

@@ -8,8 +8,7 @@ import CharacterCard from "../../Components/General/CharacterCard";
 //2 By using those location characters are retrieved
     const Dimension =(props)=> {
     
-        const [residents, setresidents] = useState();
-        const [LocationInfo, setLocationInfo] = useState();
+        const [residents, setresidents] = useState([]);
 
           useEffect(()=>{
             (async () => {
@@ -17,10 +16,11 @@ import CharacterCard from "../../Components/General/CharacterCard";
             if (props.match.params.dimension) {
               try {
                 const Location = await getLocationsinfo(props.match.params.dimension);   
-                setLocationInfo(Location)
                 const residentIds =  extractIdsFromArr(Location); 
-                if(residentIds)
+                if(residentIds.includes(","))
                   setresidents(await getSingleOrmultipleData('character',residentIds));
+                else
+                setresidents([await getSingleOrmultipleData('character',residentIds)]);
                 
               } catch (err) {
               }
@@ -30,24 +30,18 @@ import CharacterCard from "../../Components/General/CharacterCard";
         
             let locationDetails = null;
             let characterList =null;
-            if(residents && residents.length){
             characterList = residents.map(character => {
                 return <CharacterCard key={character.id} data={character} />; 
             });
-        }
-        else if(residents){
-          characterList= <CharacterCard key={residents.id} data={residents} />; 
-        }
-        else 
-        characterList= <div className="no-data"> No characters for this dimension</div>; 
 
-            if (LocationInfo) {
+            if(!residents.length)
+               characterList= <div className="no-data"> No characters for this dimension</div>; 
+
              locationDetails = (
                   <div className="movie-details-wrapper">
                     <div className="title">Dimension : {props.match.params.dimension}</div>            
                   </div>
                 );
-              }
           return(
             <div className="">
              {locationDetails}
